@@ -1,0 +1,111 @@
+.leaderboard .container {
+  padding: 10px 0px;
+}
+
+.leaderboard ul li {
+  text-align: left;
+}
+
+.loderLeaders {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.loderLeaders span {
+  display: block;
+  width: 100%;
+  border-radius: 10px;
+  height: 130px;
+  background: linear-gradient(
+    90deg,
+    rgb(230, 230, 230),
+    rgb(235, 235, 235),
+    rgb(250, 250, 250),
+    rgb(235, 235, 235),
+    rgb(230, 230, 230)
+  );
+  margin-bottom: 20px;
+  background-size: 500%;
+  animation: loaded 10s linear infinite;
+}
+
+.leaderboard ul li:last-child {
+  width: 6%;
+  text-align: center;
+}
+
+.leaderboard ul li:nth-child(1) {
+  width: 10%;
+  text-align: center;
+}
+
+.leaderboard ul li:nth-child(2) {
+  width: 30%;
+}
+
+.leaderboard ul li:nth-child(3) {
+  width: 34%;
+}
+
+.leaderboard ul li:nth-child(4) {
+  width: 10%;
+  text-align: center;
+  color: orange;
+}
+
+
+
+.user-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 10px;
+  position: sticky;
+  top: 87px;
+  background-color: white;
+  z-index: 9;
+}
+
+.leaderboard-contents {
+  margin-top: 10px;
+}
+
+.user-levles {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 10px 6px;
+  background-color: white;
+  border-radius: 10px;
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  border: 8px groove rgb(166, 166, 166);
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+  z-index: 0;
+  margin: 0 auto;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.rating-records {
+  font-size: 20px;
+  font-weight: 700;
+  display: block;
+  position: absolute;
+  bottom: 0px;
+  color: rgb(0, 0, 0);
+  z-index: 1;
+  width: 100%;
+  background-color: rgba(235, 235, 235, 0.699);
+}

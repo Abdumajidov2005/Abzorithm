@@ -1,0 +1,74 @@
+.create-accaunt .container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 0px;
+    min-height: 80vh;
+}
+
+.accaunt-settings{
+    width: 600px;
+}
+
+
+
+.accaunt-settings .btns:nth-child(1){
+    padding: 10px 40px;
+    letter-spacing: 1px;
+    font-size: 16px;
+    font-weight: 500;
+    background-color: red;
+}
+
+.accaunt-btns{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.accaunt-settings .btns{
+    padding: 10px 40px;
+    letter-spacing: 1px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.accaunt-settings .settings{
+    /* border: 1px solid blue; */
+    display: flex;
+    align-items: start;
+    flex-direction: column;
+    justify-content: left;
+    margin-bottom: 20px;
+}
+
+.settings label{
+    font-size: 18px;
+    font-weight: 600;
+    color: black;
+}
+
+.settings input{
+    width: 100%;
+    padding: 10px 10px;
+    font-size: 16px;
+    font-weight: 500;
+    color: black;
+    border-radius: 4px;
+    outline: none;
+    border: 0.4px solid black;
+}
+
+.settings input::placeholder{
+    color: rgba(128, 128, 128, 0.614);
+}
+
+
+.settings textarea{
+    width: 100%;
+    height: 250px;
+    outline: none;
+    border-radius: 6px;
+    resize: none;
+    padding: 10px;
+}

@@ -1,0 +1,161 @@
+.problems .container {
+  padding: 20px 0px;
+  min-height: 100vh;
+}
+
+.problems-panel .problems_questions .card-problem {
+  display: block;
+  text-decoration: none;
+  color: black;
+  background-color: rgba(128, 128, 128, 0.395);
+  padding: 20px 15px;
+  font-size: 20px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.problems-panel .problems_questions .card-problem:nth-child(odd) {
+  background-color: rgba(128, 128, 128, 0.222);
+  border-radius: 5px;
+}
+
+.problems-panel .problems_questions .card-problem:nth-child(even) {
+  background-color: transparent;
+}
+
+.problems-panel .problems_questions .card-problem:hover {
+  background-color: rgba(128, 128, 128, 0.5);
+}
+
+.card-problem .title-problems {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.title-problems .sloved {
+  width: 20px;
+  height: 20px;
+  background-color: transparent;
+  border-radius: 5px;
+  margin-right: 4px;
+  /* border: 1px solid red; */
+  position: relative;
+}
+
+.sloved span:nth-child(1) {
+  display: inline-block;
+  width: 7px;
+  height: 2px;
+  background-color: green;
+  transform: rotate(43deg);
+  position: absolute;
+  bottom: 4px;
+  left: 0px;
+}
+
+.sloved span:nth-child(2) {
+  display: inline-block;
+  width: 15px;
+  height: 2px;
+  background-color: green;
+  transform: rotate(-49deg);
+  position: absolute;
+  bottom: 7px;
+  right: 2px;
+}
+
+.title-problems span {
+  display: block;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.title-problems h3 {
+  font-size: 18px;
+  font-weight: 500;
+  color: black;
+}
+
+.icons-problems {
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  gap: 10px;
+}
+
+.icons-problems p {
+  text-align: right;
+  width: 80px;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.difficulty {
+  font-weight: bold;
+}
+
+.difficulty.easy {
+  color: green;
+}
+
+.difficulty.medium {
+  color: orange;
+}
+
+.difficulty.hard {
+  color: red;
+}
+
+.loader-border {
+  width: 100%;
+}
+
+.loader:nth-child(odd){
+  width: 100%;
+  height: 62px;
+  border-radius: 6px;
+  background: linear-gradient(
+    90deg,
+    rgb(204, 203, 203, 1),
+    rgb(206, 205, 205, 1),
+    rgb(246, 245, 245),
+    rgb(206, 205, 205, 1),
+    rgba(204, 203, 203, 1)
+  );
+  background-size: 500%;
+  animation: loaded 10s linear infinite;
+}
+
+.loader:nth-child(even){
+  width: 100%;
+  height: 62px;
+  border-radius: 6px;
+background: linear-gradient(
+  90deg,
+  rgba(240, 240, 240, 1),
+  rgba(243, 243, 243, 1),
+  rgba(255, 255, 255, 1),
+  rgba(243, 243, 243, 1),
+  rgba(240, 240, 240, 1)
+);
+  background-size: 500%;
+  animation: loaded 10s linear infinite;
+}
+
+
+@keyframes loaded {
+  0% {
+    background-position: 0%;
+  }
+  50% {
+    background-position: 300%;
+  }
+  100% {
+    background-position: 0%;
+  }
+}

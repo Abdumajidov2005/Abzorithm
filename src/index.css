@@ -1,0 +1,35 @@
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap");
+/* font-family: "Fira Code", monospace; */
+
+@import url('https://fonts.googleapis.com/css2?family=Cascadia+Code:ital,wght@0,200..700;1,200..700&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap');
+ /* font-family: "Fira Code", monospace; */
+
+ @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+ /* font-family: "Roboto", sans-serif; */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  transition: all .3s ease;
+}
+
+.container {
+  max-width: 1200px;
+  font-family: "Cascadia Code", sans-serif;
+  margin: 0 auto;
+}
+
+body{
+  background-color: rgba(244, 243, 243, 0.516);
+}
+
+ul {
+  list-style: none;
+}
+
+input {
+  outline: none;
+}

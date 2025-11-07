@@ -1,0 +1,157 @@
+.profil-me {
+  min-height: 110vh;
+}
+
+.avatar-lines {
+  background-color: #2d2d2d;
+}
+
+.avatar-lines .container {
+  padding: 70px 0px;
+  padding-left: 130px;
+  display: flex;
+  align-items: center;
+  gap: 60px;
+}
+
+.avatar-box {
+  width: 170px;
+  height: 170px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 3px solid #eee;
+  background-color: #556080;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.users-infos h2 {
+  color: white;
+  text-transform: capitalize;
+  letter-spacing: 1px;
+  padding-bottom: 5px;
+}
+
+.users-infos p {
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.529);
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.profil-information .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  position: relative;
+}
+
+.basic-informtion {
+  width: 350px;
+  padding-top: 20px;
+}
+
+.basic-informtion li {
+  padding: 15px 15px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 500;
+  color: black;
+}
+
+.basic-informtion li:hover {
+  background-color: #dedede;
+}
+
+.basic-informtion li.active {
+  background-color: #dedede;
+}
+
+.external-info {
+  width: 800px !important;
+  height: 500px;
+  overflow-y: scroll;
+  position: absolute;
+  top: -50px;
+  right: 0px;
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  padding: 20px;
+  width: 320px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.basic_info-bases.active {
+  display: none;
+}
+
+.edit_info-bases {
+  display: none;
+}
+
+.edit_info-bases.active {
+  display: block;
+}
+
+.external-info h4 {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+
+.external-info p {
+  width: 100%;
+  padding: 10px 10px;
+  font-size: 18px;
+  font-weight: 400;
+  display: flex;
+  align-items: start;
+  justify-content: left;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.136);
+}
+
+.external-info span {
+  display: block;
+  width: 200px;
+}
+
+.external-info span:nth-child(2) {
+  width: 100%;
+  display: block;
+}
+
+.external-info_bio span:nth-child(2) {
+  height: 100px;
+  overflow-y: scroll;
+}
+
+
+.edit_info-bases .submit_btns{
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 20px 0px;
+}
