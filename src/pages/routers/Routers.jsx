@@ -69,7 +69,6 @@ function Routers() {
             element={<ProfilMe profil={profil} setProfil={setProfil} />}
           />
         </Routes>
-        <Footer />
       </BrowserRouter>
     </>
   );

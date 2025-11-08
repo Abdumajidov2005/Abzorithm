@@ -238,7 +238,7 @@ function CodePanels({ profil, setProfil, setProblemData }) {
                         <p>Expected: {output.error_expected}</p>
                       )}
                       {output.error_output && (
-                        <p>Output: {output.error_output}</p>
+                        <p>{output.error_output}</p>
                       )}
                     </div>
                   )}
