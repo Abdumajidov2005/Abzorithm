@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Navbar.css";
-import { FaCoins, FaRegUser } from "react-icons/fa";
+import { FaCode, FaCoins, FaRegUser } from "react-icons/fa";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { FaXmark } from "react-icons/fa6";
 import { getProfilMe } from "../../pages/services/app";
@@ -20,10 +20,13 @@ function Navbar({ tokens, setTokens, profilMe, setProfilMe }) {
       <div className="navbar">
         <div className="container">
           <Link to={"/"} className="logo">
-            <div className="logo-img">
-              <img src="/imgs/logo.jpg" alt="" />
-            </div>
-            {/* <h1 className="outlined ">Abzorithm</h1> */}
+            <p>
+              <FaCode />
+            </p>
+            <h1>
+              abzorithm
+              <span>From Junior to Google Engineer </span>
+            </h1>
           </Link>
           <ul className="links">
             <NavLink to={"/"}>Problems</NavLink>

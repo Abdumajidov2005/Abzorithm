@@ -10,7 +10,6 @@ import SignIn from "../signIn/SignIn";
 import { getToken } from "../services/token";
 import ProfilMe from "../profilMe/ProfilMe";
 import LeaderBoard from "../leaderboard/LeaderBoard";
-import Footer from "../../components/footer/Footer";
 
 function Routers() {
   const [tokens, setTokens] = useState(getToken());
