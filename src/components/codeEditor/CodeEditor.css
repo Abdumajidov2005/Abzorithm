@@ -19,6 +19,9 @@
   font-size: 16px;
   font-weight: 500;
   padding: 9.5px 15px;
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
 }
 
 .clean-btn:hover {
@@ -31,6 +34,9 @@
   font-size: 16px;
   font-weight: 500;
   padding: 9.5px 15px;
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
 }
 
 .run-btn:hover {

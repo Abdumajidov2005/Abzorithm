@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./ProfilMe.css";
 import { getProfilMe } from "../services/app";
 import { GrCircleInformation } from "react-icons/gr";
@@ -7,16 +7,24 @@ import Button from "@mui/material/Button";
 
 import { baseUrl } from "../services/config";
 import { getToken } from "../services/token";
+import { FiCamera } from "react-icons/fi";
 
-function ProfilMe({ profil, setProfil }) {
+function ProfilMe({ profil, setProfil, setProfilMe }) {
   const [editInformation, setEditInformation] = useState(false);
 
-  const [bio, setBio] = useState(profil?.bio);
-  // const [avatar, setAvatar] = useState(profil?.avatar);
-  const [country, setCountry] = useState(profil?.country);
+  const [bio, setBio] = useState("");
+  const [avatarPreview, setAvatarPreview] = useState("");
+  const [country, setCountry] = useState("");
+
+  const fileInput = useRef();
 
   useEffect(() => {
-    getProfilMe()?.then(setProfil);
+    getProfilMe()?.then((data) => {
+      setProfil(data);
+      setBio(data?.bio || "");
+      setCountry(data?.country || "");
+      setAvatarPreview(data?.avatar || "/imgs/icons.png");
+    });
   }, [setProfil]);
 
   const editProfil = () => {
@@ -24,8 +32,10 @@ function ProfilMe({ profil, setProfil }) {
     getToken() ? myHeaders.append("Authorization", `Bearer ${getToken()}`) : "";
     const formdata = new FormData();
     formdata.append("bio", bio);
-    formdata.append("avatar", fileInput.files[0], "[PROXY]");
     formdata.append("country", country);
+    if (fileInput.current?.files[0]) {
+      formdata.append("avatar", fileInput.current.files[0]);
+    }
 
     const requestOptions = {
       method: "PUT",
@@ -38,8 +48,17 @@ function ProfilMe({ profil, setProfil }) {
       .then((response) => response.json())
       .then((result) => {
         console.log(result);
+        getProfilMe()?.then(setProfilMe);
+        setEditInformation(false);
       })
       .catch((error) => console.error(error));
+  };
+
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setAvatarPreview(URL.createObjectURL(file));
+    }
   };
 
   return (
@@ -48,14 +67,33 @@ function ProfilMe({ profil, setProfil }) {
         <div className="container">
           <div className="avatar-box">
             <img
-              src={profil?.avatar || "/imgs/icons.png"}
+              src={avatarPreview || "/imgs/icons.png"}
               alt="Avatar"
               className="avatar-img"
             />
+            {editInformation && (
+              <div
+                className="avatar-edit-overlay"
+                onClick={() => fileInput.current.click()}
+              >
+                <FiCamera className="camera-icon" />
+                <span>Change photo</span>
+              </div>
+            )}
+
+            {/* Fayl input — ko‘rinmaydi */}
+            <input
+              type="file"
+              accept="image/*"
+              ref={fileInput}
+              onChange={handleAvatarChange}
+              style={{ display: "none" }}
+            />
           </div>
+
           <div className="users-infos">
             <h2>{profil?.username}</h2>
-            <p>{profil?.country}</p>  
+            <p>{profil?.country}</p>
           </div>
         </div>
       </div>
@@ -146,9 +184,18 @@ function ProfilMe({ profil, setProfil }) {
                 </span>
               </div>
               <div className="submit_btns">
-                <Button className="btn_edit" type="button" variant="contained">
+                <Button
+                  onClick={() => {
+                    setEditInformation(false);
+                  }}
+                  className="btn_edit"
+                  type="button"
+                  variant="outlined"
+                  color="error"
+                >
                   Cancel
                 </Button>
+                
                 <Button className="btn_edit" type="submit" variant="contained">
                   Save
                 </Button>

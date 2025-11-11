@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./Navbar.css";
-import { FaCode, FaCoins, FaRegUser } from "react-icons/fa";
+import { FaCode, FaCoins, FaUserShield } from "react-icons/fa";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { FaXmark } from "react-icons/fa6";
 import { getProfilMe } from "../../pages/services/app";
@@ -13,6 +13,28 @@ function Navbar({ tokens, setTokens, profilMe, setProfilMe }) {
 
   useEffect(() => {
     getProfilMe()?.then(setProfilMe);
+  }, []);
+
+  const panelRef = useRef(null);
+  const buttonRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // agar na panel, na button bosilmasa -> yopiladi
+      if (
+        panelRef.current &&
+        !panelRef.current.contains(event.target) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(event.target)
+      ) {
+        setShowModal(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
   }, []);
 
   return (
@@ -84,6 +106,7 @@ function Navbar({ tokens, setTokens, profilMe, setProfilMe }) {
             {tokens ? (
               <div
                 className="userIcon"
+                ref={buttonRef}
                 onClick={() => {
                   setShowModal(true);
                 }}
@@ -93,7 +116,10 @@ function Navbar({ tokens, setTokens, profilMe, setProfilMe }) {
             ) : (
               ""
             )}
-            <div className={`modal ${showModal ? "active" : ""}`}>
+            <div
+              ref={panelRef}
+              className={`modal ${showModal ? "active" : ""}`}
+            >
               <p
                 onClick={() => {
                   setShowModal(false);
@@ -115,7 +141,7 @@ function Navbar({ tokens, setTokens, profilMe, setProfilMe }) {
                 }}
                 className="list-profil"
               >
-                <FaRegUser />
+                <FaUserShield />
                 Personal Information
               </Link>
               <span

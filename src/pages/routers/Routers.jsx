@@ -10,6 +10,7 @@ import SignIn from "../signIn/SignIn";
 import { getToken } from "../services/token";
 import ProfilMe from "../profilMe/ProfilMe";
 import LeaderBoard from "../leaderboard/LeaderBoard";
+import Error from "../error/Error";
 
 function Routers() {
   const [tokens, setTokens] = useState(getToken());
@@ -65,8 +66,15 @@ function Routers() {
           <Route path="/create accaunt" element={<CreateAccaunt />} />
           <Route
             path="/profil"
-            element={<ProfilMe profil={profil} setProfil={setProfil} />}
+            element={
+              <ProfilMe
+                profil={profil}
+                setProfil={setProfil}
+                setProfilMe={setProfilMe}
+              />
+            }
           />
+          <Route path="*" element={<Error />} />
         </Routes>
       </BrowserRouter>
     </>
