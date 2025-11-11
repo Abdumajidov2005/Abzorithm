@@ -132,9 +132,6 @@
   color: gray;
 }
 
-
-
-
 .navbar .links {
   display: flex;
   align-items: center;
@@ -142,7 +139,7 @@
 }
 
 .navbar .links a {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 500;
   color: black;
   cursor: pointer;
@@ -190,8 +187,9 @@
 }
 
 .navbar .icons .userIcon {
-  width: 35px;
-  height: 35px;
+  width: 42px;
+  height: 42px;
+  padding: 1px;
   border-radius: 50%;
   cursor: pointer;
   color: black;

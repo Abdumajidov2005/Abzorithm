@@ -39,7 +39,7 @@
 .users-infos p {
   font-size: 16px;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.529);
+  color: rgba(255, 255, 255, 0.873);
 }
 
 button {
@@ -61,6 +61,21 @@ button:hover {
   justify-content: space-between;
   gap: 20px;
   position: relative;
+}
+
+.external-info {
+  width: 800px !important;
+  height: 500px;
+  overflow-y: scroll;
+  position: absolute;
+  top: -50px;
+  right: 0px;
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  padding: 20px;
+  width: 320px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
 }
 
 .basic-informtion {
@@ -89,21 +104,6 @@ button:hover {
   background-color: #dedede;
 }
 
-.external-info {
-  width: 800px !important;
-  height: 500px;
-  overflow-y: scroll;
-  position: absolute;
-  top: -50px;
-  right: 0px;
-  background: #fff;
-  border-radius: 10px;
-  border: 1px solid #ddd;
-  padding: 20px;
-  width: 320px;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
-}
-
 .basic_info-bases.active {
   display: none;
 }
@@ -116,13 +116,13 @@ button:hover {
   display: block;
 }
 
-.external-info h4 {
+.basic_info-bases h4 {
   font-size: 20px;
   font-weight: 500;
   margin-bottom: 15px;
 }
 
-.external-info p {
+.basic_info-bases p {
   width: 100%;
   padding: 10px 10px;
   font-size: 18px;
@@ -133,25 +133,76 @@ button:hover {
   border-bottom: 1px solid rgba(0, 0, 0, 0.136);
 }
 
-.external-info span {
+.basic_info-bases span {
   display: block;
   width: 200px;
 }
 
-.external-info span:nth-child(2) {
+.basic_info-bases span:nth-child(2) {
   width: 100%;
   display: block;
 }
 
-.external-info_bio span:nth-child(2) {
+.basic-info_bio span:nth-child(2) {
   height: 100px;
   overflow-y: scroll;
 }
 
+.edit_info-bases h4 {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
 
-.edit_info-bases .submit_btns{
+.edit_info-bases .creates {
+  width: 100%;
+  padding: 10px 10px;
+  font-size: 18px;
+  font-weight: 400;
+  display: flex;
+  align-items: start;
+  justify-content: left;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.136);
+}
+
+.edit_info-bases .creates span:nth-child(1) {
+  width: 160px;
+  display: block;
+}
+
+.edit_info-bases .creates span:nth-child(2) {
+  width: 100%;
+  display: block;
+}
+
+.edit_info-bases .creates textarea {
+  width: 100%;
+  height: 100px;
+  resize: none;
+  outline: none;
+  border-radius: 5px;
+  border: 0.5px solid gray;
+  padding: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  color: black;
+}
+
+.edit_info-bases .creates  input {
+  width: 100%;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 0.5px solid gray;
+  font-size: 16px;
+  font-weight: 500;
+  color: black;
+  outline: none;
+}
+
+.edit_info-bases .submit_btns {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 15px;
   padding: 20px 0px;
 }

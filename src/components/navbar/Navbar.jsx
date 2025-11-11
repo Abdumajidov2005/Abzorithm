@@ -29,8 +29,12 @@ function Navbar({ tokens, setTokens, profilMe, setProfilMe }) {
             </h1>
           </Link>
           <ul className="links">
-            <NavLink to={"/"}>Problems</NavLink>
-            <NavLink to={"/leaderboard"}>LeaderBoard</NavLink>
+            <li>
+              <NavLink to={"/"}>Problems</NavLink>
+            </li>
+            <li>
+              <NavLink to={"/leaderboard"}>LeaderBoard</NavLink>
+            </li>
           </ul>
           <div className="icons">
             {tokens ? (
