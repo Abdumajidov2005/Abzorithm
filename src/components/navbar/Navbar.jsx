@@ -116,47 +116,51 @@ function Navbar({ tokens, setTokens, profilMe, setProfilMe }) {
             ) : (
               ""
             )}
-            <div
-              ref={panelRef}
-              className={`modal ${showModal ? "active" : ""}`}
-            >
-              <p
-                onClick={() => {
-                  setShowModal(false);
-                }}
-                className="xmark"
+            {tokens ? (
+              <div
+                ref={panelRef}
+                className={`modal ${showModal ? "active" : ""}`}
               >
-                <FaXmark />
-              </p>
-              <div className="user-profil-status">
-                <div className="status-img">
-                  <img src={profilMe?.avatar || "/imgs/icons.png"} alt="" />
+                <p
+                  onClick={() => {
+                    setShowModal(false);
+                  }}
+                  className="xmark"
+                >
+                  <FaXmark />
+                </p>
+                <div className="user-profil-status">
+                  <div className="status-img">
+                    <img src={profilMe?.avatar || "/imgs/icons.png"} alt="" />
+                  </div>
+                  <h2>{profilMe?.username}</h2>
                 </div>
-                <h2>{profilMe?.username}</h2>
+                <Link
+                  to={"/profil"}
+                  onClick={() => {
+                    setShowModal(false);
+                  }}
+                  className="list-profil"
+                >
+                  <FaUserShield />
+                  Personal Information
+                </Link>
+                <span
+                  className="list-profil"
+                  onClick={() => {
+                    localStorage.clear();
+                    setTokens(null);
+                    setShowModal(false);
+                    navigate("/create accaunt");
+                  }}
+                >
+                  <IoExitOutline />
+                  Sign Out
+                </span>
               </div>
-              <Link
-                to={"/profil"}
-                onClick={() => {
-                  setShowModal(false);
-                }}
-                className="list-profil"
-              >
-                <FaUserShield />
-                Personal Information
-              </Link>
-              <span
-                className="list-profil"
-                onClick={() => {
-                  localStorage.clear();
-                  setTokens(null);
-                  setShowModal(false);
-                  navigate("/create accaunt");
-                }}
-              >
-                <IoExitOutline />
-                Sign Out
-              </span>
-            </div>
+            ) : (
+              ""
+            )}
           </div>
         </div>
       </div>

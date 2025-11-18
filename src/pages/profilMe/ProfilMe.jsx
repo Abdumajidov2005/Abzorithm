@@ -19,6 +19,7 @@ function ProfilMe({ profil, setProfil, setProfilMe }) {
   const fileInput = useRef();
 
   useEffect(() => {
+    if (!getToken()) return; // ❗ TOKEN YO‘Q -> FETCH QILMA!
     getProfilMe()?.then((data) => {
       setProfil(data);
       setBio(data?.bio || "");
@@ -195,7 +196,7 @@ function ProfilMe({ profil, setProfil, setProfilMe }) {
                 >
                   Cancel
                 </Button>
-                
+
                 <Button className="btn_edit" type="submit" variant="contained">
                   Save
                 </Button>

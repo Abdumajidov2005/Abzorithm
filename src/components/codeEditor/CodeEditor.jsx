@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import Editor from "@monaco-editor/react";
-
-import { baseUrl } from "../../pages/services/config";
+import { getMasala, getProfilMe } from "../../pages/services/app";
 import { getToken } from "../../pages/services/token";
-import { getMasala, getProblems, getProfilMe } from "../../pages/services/app";
+import { baseUrl } from "../../pages/services/config";
 import "./CodeEditor.css";
 
 export default function CodeEditor({
@@ -11,27 +10,50 @@ export default function CodeEditor({
   setCodeBy,
   profil,
   setProfil,
-  setProblemData,
+  problemId,
   setOutput,
   setRunTimeWatch,
   setTestCaseWatch,
   setLoaderRunTime,
-  filteredCases,
 }) {
-  const [language, setLanguage] = useState("python");
-  const [selection, setSelection] = useState("Python");
-  const [opening, setOpening] = useState(false);
-  const [search, setSearch] = useState("");
+  const [languages, setLanguages] = useState([]);
+  const [language, setLanguage] = useState(null);
+  const [selectionOpen, setSelectionOpen] = useState(false);
+
   const ref = useRef(null);
   const optionRef = useRef(null);
   const editorRef = useRef(null);
 
-  const options = ["Python", "JavaScript"];
+  // 🔥 backend formatiga moslash
+  const normalizeLanguages = (langs) => {
+    if (!langs) return [];
+    if (!Array.isArray(langs)) return [];
+    return langs.map((l) => (Array.isArray(l) ? l[0] : l));
+  };
+
+  const loadTemplate = async (lang) => {
+    const res = await getMasala(problemId, lang);
+    console.log("🔥 TEMPLATE RESPONSE:", res);
+
+    // backenddan tillarni olish
+    const langs = normalizeLanguages(res?.languages);
+    setLanguages(langs);
+
+    // default language tanlash
+    if (!language && langs.length > 0) {
+      setLanguage(langs[0]);
+    }
+
+    setCodeBy(res);
+  };
 
   useEffect(() => {
+    if (!problemId) return;
+
     getProfilMe()?.then(setProfil);
-    getMasala()?.then(setCodeBy);
-  }, []);
+
+    loadTemplate(language ?? "python"); // recursionni oldini oladi
+  }, [problemId]);
 
   const beforeMount = (monaco) => {
     monaco.editor.defineTheme("myCustomTheme", {
@@ -49,223 +71,145 @@ export default function CodeEditor({
     });
   };
 
-  const getCreateSubmition = () => {
-    setLoaderRunTime(true);
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Authorization", `Bearer ${getToken()}`);
+  const submitCode = () => {
+    if (!codeBy?.template_code) return;
 
-    const raw = JSON.stringify({
-      user: profil?.id,
-      problem: codeBy?.problem,
-      code: codeBy?.template_code,
-      language,
-    });
+    setLoaderRunTime(true);
 
     fetch(`${baseUrl}/submissions/create/`, {
       method: "POST",
-      headers: myHeaders,
-      body: raw,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getToken()}`,
+      },
+      body: JSON.stringify({
+        user: profil?.id,
+        problem: problemId,
+        code: codeBy.template_code,
+        language,
+      }),
     })
       .then((r) => r.json())
-      .then((result) => {
-        // 1. Rangni statusga qarab belgilovchi funksiya
-        const getStatusColor = (status = "") => {
-          const s = status.toLowerCase();
+      .then((res) => {
+        const s = (res.status || "").toLowerCase();
+        const statusColor = s.includes("accepted")
+          ? "green"
+          : s.includes("wrong")
+          ? "red"
+          : s.includes("runtime")
+          ? "orange"
+          : s.includes("time limit")
+          ? "purple"
+          : "gray";
 
-          if (s.includes("accepted")) return "green";
-          if (s.includes("wrong")) return "red";
-          if (s.includes("runtime")) return "orange";
-          if (s.includes("time limit")) return "purple";
-
-          return "gray";
-        };
-
-        // 2. Outputni to‘liq shakllantirish
-        const makeOutput = (result) => {
-          const time = Math.floor((result?.execution_time || 0) * 1000) / 1000;
-
-          return {
-            id: result?.id,
-            status: result?.status || "Unknown",
-            time,
-            color: getStatusColor(result?.status),
-            failed_test: result?.failed_test ?? "-",
-            error_input: result?.error_input ?? "-",
-            error_expected: result?.error_expected ?? "-",
-            error_output: result?.error_output ?? "-",
-          };
-        };
-
-        // 3. setOutput orqali natijani chiqarish
-        const output = makeOutput(result);
-        setOutput(output);
-
-        // 4. Agar “Accepted” bo‘lsa, keyingi masalani olish
-        if (result?.status?.toLowerCase().includes("accepted")) {
-          getProblems()
-            ?.then((data) => data && setProblemData(data))
-            .catch(console.error);
-        }
+        setOutput({
+          id: res.id,
+          status: res.status,
+          color: statusColor,
+          time: Math.floor((res.execution_time || 0) * 1000) / 1000,
+          failed_test: res.failed_test ?? "-",
+          error_input: res.error_input ?? "-",
+          error_expected: res.error_expected ?? "-",
+          error_output: res.error_output ?? "-",
+        });
       })
-      .catch(console.error)
-      .finally(() => {
-        setLoaderRunTime(false);
-      });
+      .finally(() => setLoaderRunTime(false));
   };
 
-  const handleEditorMount = (editor) => {
-    editorRef.current = editor;
-  };
-
-  const handleCleanCode = () => {
+  const cleanCode = () => {
     if (!editorRef.current) return;
+    const cleaned = editorRef.current
+      .getValue()
+      .split("\n")
+      .map((line) => line.replace(/\t/g, "    ").trimEnd())
+      .join("\n");
 
-    try {
-      const code = editorRef.current.getValue();
-      const lines = code.split("\n");
-
-      const cleanedLines = [];
-      let previousEmpty = false;
-
-      for (let line of lines) {
-        // 1️⃣ Satr boshidagi indentni aniqlaymiz
-        const indentMatch = line.match(/^\s*/);
-        let indent = indentMatch ? indentMatch[0] : "";
-
-        // 2️⃣ Tabni 4-space ga o‘girib, bo‘sh joylarni standart qilamiz
-        indent = indent.replace(/\t/g, "    ");
-
-        // 3️⃣ Satr oxiridagi bo'sh joylarni o'chiramiz
-        const trimmedContent = line.trimEnd();
-
-        if (trimmedContent === "") {
-          if (!previousEmpty) {
-            cleanedLines.push("");
-            previousEmpty = true;
-          }
-        } else {
-          // 4️⃣ Satr boshidagi ortiqcha bo‘sh joylarni olib tashlaymiz
-          cleanedLines.push(indent + trimmedContent.trimStart());
-          previousEmpty = false;
-        }
-      }
-
-      const cleanedCode = cleanedLines.join("\n");
-
-      editorRef.current.setValue(cleanedCode);
-      setCodeBy((prev) => ({
-        ...(prev || {}),
-        template_code: cleanedCode,
-      }));
-    } catch (e) {
-      console.error("Clean Code error:", e);
-    }
+    editorRef.current.setValue(cleaned);
+    setCodeBy((prev) => ({ ...prev, template_code: cleaned }));
   };
-
-  const filtered = options.filter((opt) =>
-    opt.toLowerCase().includes(search.toLowerCase())
-  );
 
   useEffect(() => {
-    function handleClickOutside(e) {
+    const closeDropdown = (e) => {
       if (
         ref.current &&
         !ref.current.contains(e.target) &&
         optionRef.current &&
         !optionRef.current.contains(e.target)
       ) {
-        setOpening(false);
+        setSelectionOpen(false);
       }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    };
+    document.addEventListener("mousedown", closeDropdown);
+    return () => document.removeEventListener("mousedown", closeDropdown);
   }, []);
 
   return (
     <div className="code-boxs">
       <div className="submitions">
         <div className="submit-inputs">
-          {/* Custom Select */}
+          {/* 🔥 LANGUAGE SELECT */}
           <div ref={optionRef} className="select-box">
             <div
               ref={ref}
               className="selected"
-              onClick={() => setOpening(!opening)}
+              onClick={() => setSelectionOpen(!selectionOpen)}
             >
-              {selection}
-              <span className={`arrow ${opening ? "up" : "down"}`} />
+              {language || "Select language"}
+              <span className={`arrow ${selectionOpen ? "up" : "down"}`} />
             </div>
 
-            {opening && (
+            {selectionOpen && (
               <div className="options1 show">
-                <input
-                  type="text"
-                  placeholder="Qidirish..."
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  className="search-input"
-                />
-                {filtered.length > 0 ? (
-                  filtered.map((option, idx) => (
-                    <div
-                      key={idx}
-                      className="option"
-                      onClick={() => {
-                        setSelection(option);
-                        setLanguage(option.toLowerCase());
-                        setOpening(false);
-                        setSearch("");
-                      }}
-                    >
-                      {option}
-                    </div>
-                  ))
-                ) : (
-                  <div className="no-option">Topilmadi</div>
-                )}
+                {languages.map((lang, idx) => (
+                  <div
+                    key={idx}
+                    className="option"
+                    onClick={() => {
+                      setLanguage(lang);
+                      setSelectionOpen(false);
+                      loadTemplate(lang); //🔥 template dynamic changelanadi
+                    }}
+                  >
+                    {lang}
+                  </div>
+                ))}
               </div>
             )}
           </div>
 
           <button
+            className="run-btn"
             onClick={() => {
-              getCreateSubmition();
+              submitCode();
               setRunTimeWatch(true);
               setTestCaseWatch(false);
             }}
-            className="run-btn"
           >
             Submit
           </button>
         </div>
 
         <div className="action-buttons">
-          <button
-            onClick={handleCleanCode}
-            className="clean-btn"
-            title="Clean code (auto format)"
-          >
+          <button onClick={cleanCode} className="clean-btn">
             Clean Code
           </button>
         </div>
       </div>
 
-      {/* Editor */}
       <Editor
         width="100%"
         height="400px"
-        defaultLanguage={language}
-        beforeMount={beforeMount}
-        onMount={handleEditorMount}
+        language={language}
         theme="myCustomTheme"
+        beforeMount={beforeMount}
+        onMount={(editor) => (editorRef.current = editor)}
         value={codeBy?.template_code || ""}
         onChange={(value) =>
           setCodeBy((prev) => ({ ...prev, template_code: value || "" }))
         }
         options={{
-          colorDecorators: true,
           minimap: { enabled: false },
+          fontSize: 14,
         }}
       />
     </div>

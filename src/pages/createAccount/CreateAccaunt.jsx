@@ -9,7 +9,7 @@ function CreateAccaunt() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [bio, setBio] = useState("");
+  // const [bio, setBio] = useState("");
   const [country, setCountry] = useState("");
 
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ function CreateAccaunt() {
       username: username,
       email: email,
       password: password,
-      bio: bio,
+      // bio: bio,
       country: country,
     });
 
@@ -36,7 +36,6 @@ function CreateAccaunt() {
     fetch(`${baseUrl}/users/register/`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
-        console.log(result?.email[0]);
         if (Array.isArray(result.username) && result.username[0]) {
           toast.error(result.username[0]);
         } else if (Array.isArray(result.email) && result.email[0]) {
@@ -71,6 +70,17 @@ function CreateAccaunt() {
                 type="text"
                 required
                 placeholder="Username"
+              />
+            </div>
+            <div className="settings">
+              <label htmlFor="">Email:</label>
+              <input
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
+                type="text"
+                required
+                placeholder="Email"
               />
             </div>
             <div className="settings">

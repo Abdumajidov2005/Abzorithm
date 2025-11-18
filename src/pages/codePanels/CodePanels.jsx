@@ -58,7 +58,7 @@ function CodePanels({ profil, setProfil, setProblemData }) {
     const fetchMasalaAndCases = async () => {
       try {
         const [masala, cases] = await Promise.all([
-          getMasala(details.id),
+          getMasala(details?.id),
           getTestCase(),
         ]);
 
@@ -96,13 +96,9 @@ function CodePanels({ profil, setProfil, setProblemData }) {
         <div className="coding">
           {loadingCoding ? (
             <div className="loadingCoding">
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
+              {[...Array(7)].map((_, i) => (
+                <span key={i}></span>
+              ))}
             </div>
           ) : (
             <div className="block">
@@ -142,13 +138,11 @@ function CodePanels({ profil, setProfil, setProblemData }) {
               setCodeBy={setCodeBy}
               profil={profil}
               setProfil={setProfil}
-              setProblemData={setProblemData}
-              output={output}
               setOutput={setOutput}
               setRunTimeWatch={setRunTimeWatch}
               setTestCaseWatch={setTestCaseWatch}
               setLoaderRunTime={setLoaderRunTime}
-              filteredCases={filteredCases}
+              problemId={details?.id}
             />
           </div>
 
@@ -194,9 +188,9 @@ function CodePanels({ profil, setProfil, setProblemData }) {
                   ))
                 ) : (
                   <div className="loadingCases">
-                     <span className="lodes"></span>
-                     <span className="lodes"></span>
-                     <span className="lodes"></span>
+                    <span className="lodes"></span>
+                    <span className="lodes"></span>
+                    <span className="lodes"></span>
                   </div>
                 )}
               </div>
@@ -238,7 +232,7 @@ function CodePanels({ profil, setProfil, setProblemData }) {
                         <p>Expected: {output.error_expected}</p>
                       )}
                       {output.error_output && (
-                        <p>{output.error_output}</p>
+                        <p> Output:{output.error_output}</p>
                       )}
                     </div>
                   )}

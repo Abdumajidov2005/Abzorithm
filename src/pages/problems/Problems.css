@@ -1,5 +1,48 @@
 .problems .container {
+  padding: 10px 0px;
+}
+
+.search_panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 20px 0px;
+}
+
+.search_panel .search_panel-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search_panel-title_content {
+  width: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100px;
+  overflow: hidden;
+  background-color: #cdcdcd;
+}
+
+.search_panel-title_content input{
+  width: 100%;
+  border-radius: 100px;
+  padding: 5px 10px;
+  outline: none;
+  border: none;
+  background-color: transparent;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.search_panel-title_content label{
+  padding: 7px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 18px;
 }
 
 .problems-panel .problems_questions .card-problem {
@@ -114,7 +157,7 @@
   width: 100%;
 }
 
-.loader:nth-child(odd){
+.loader:nth-child(odd) {
   width: 100%;
   height: 62px;
   border-radius: 6px;
@@ -130,22 +173,21 @@
   animation: loaded 10s linear infinite;
 }
 
-.loader:nth-child(even){
+.loader:nth-child(even) {
   width: 100%;
   height: 62px;
   border-radius: 6px;
-background: linear-gradient(
-  90deg,
-  rgba(240, 240, 240, 1),
-  rgba(243, 243, 243, 1),
-  rgba(255, 255, 255, 1),
-  rgba(243, 243, 243, 1),
-  rgba(240, 240, 240, 1)
-);
+  background: linear-gradient(
+    90deg,
+    rgba(240, 240, 240, 1),
+    rgba(243, 243, 243, 1),
+    rgba(255, 255, 255, 1),
+    rgba(243, 243, 243, 1),
+    rgba(240, 240, 240, 1)
+  );
   background-size: 500%;
   animation: loaded 10s linear infinite;
 }
-
 
 @keyframes loaded {
   0% {

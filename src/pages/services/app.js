@@ -20,7 +20,10 @@ export const getProblems = () => {
     .then((result) => {
       return result;
     })
-    .catch((error) => console.error(error));
+    .catch((error) => {
+      console.error(error);
+      return [];
+    });
 };
 
 export const getProblemsDetails = (slug) => {
@@ -36,14 +39,17 @@ export const getProblemsDetails = (slug) => {
   return fetch(`${baseUrl}/problems/${slug}/`, requestOptions)
     .then((response) => response.json())
     .then((result) => {
-      // console.log(result);
       return result;
     })
-    .catch((error) => console.error(error));
+    .catch((error) => {
+      console.error(error);
+      return [];
+    });
 };
 
-export const getMasala = (id) => {
+export const getMasala = async (id, language) => {
   if (!id) return null;
+
   const myHeaders = new Headers();
   myHeaders.append("Authorization", `Bearer ${getToken()}`);
 
@@ -53,13 +59,16 @@ export const getMasala = (id) => {
     redirect: "follow",
   };
 
-  return fetch(`${baseUrl}/submissions/template/${id}/`, requestOptions)
-    .then((response) => response.json())
-    .then((result) => {
-      return result;
-    })
-    .catch((error) => console.error(error));
+  const res = await fetch(`${baseUrl}/submissions/template/${id}/${language}/`, requestOptions);
+
+  if (!res.ok) {
+    console.warn("Template not found for:", language, "trying fallback…");
+    return null;
+  }
+
+  return await res.json();
 };
+
 
 export const getTestCase = () => {
   const requestOptions = {
@@ -72,27 +81,37 @@ export const getTestCase = () => {
     .then((result) => {
       return result;
     })
-    .catch((error) => console.error(error));
+    .catch((error) => {
+      console.error(error);
+      return [];
+    });
 };
 
 // apini shundan olaman
 
 export const getProfilMe = () => {
-  const myHeaders = new Headers();
-  myHeaders.append("Authorization", `Bearer ${getToken()}`);
+  const token = getToken();
 
-  const requestOptions = {
+  // TOKEN BO‘LMASA API CHAQLANMASIN
+  if (!token) return Promise.resolve(null);
+
+  const myHeaders = new Headers({
+    Authorization: `Bearer ${token}`,
+  });
+
+  return fetch(`${baseUrl}/users/me/`, {
     method: "GET",
     headers: myHeaders,
     redirect: "follow",
-  };
-
-  return fetch(`${baseUrl}/users/me/`, requestOptions)
-    .then((response) => response.json())
-    .then((result) => {
-      return result;
+  })
+    .then((response) => {
+      if (response.status === 401) return null;
+      return response.json();
     })
-    .catch((error) => console.error(error));
+    .catch((error) => {
+      console.error(error);
+      return null;
+    });
 };
 
 export const getLeaderBoard = () => {
@@ -106,5 +125,8 @@ export const getLeaderBoard = () => {
     .then((result) => {
       return result;
     })
-    .catch((error) => console.error(error));
+    .catch((error) => {
+      console.error(error);
+      return [];
+    });
 };

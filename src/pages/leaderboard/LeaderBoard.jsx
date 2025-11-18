@@ -47,7 +47,7 @@ function LeaderBoard({ ratingUser, setRatingUser }) {
                             e.target.src = "/imgs/icons.png";
                           }}
                           alt={item?.username}
-                        />
+                        />n
                       </div>
                     </li>
                     <li>
@@ -59,7 +59,7 @@ function LeaderBoard({ ratingUser, setRatingUser }) {
                       <p>{item?.country.length == 0 ? "-" : item?.country}</p>
                     </li>
                     <li>
-                      <p>{item?.bio?.length == 0 ? "-" : item?.bio}</p>
+                      <p>{item?.bio?.length == 0 ? "-" : item?.bio.length > 40 ? item?.bio.slice(0,40)+"...":item?.bio}</p>
                     </li>
                     <li>
                       {item?.score*10}
