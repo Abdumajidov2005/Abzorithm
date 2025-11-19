@@ -29,19 +29,6 @@ function Routers() {
   return (
     <>
       <BrowserRouter>
-        <Helmet>
-          {/* Default statik OG meta */}
-          <title>Abzorithm</title>
-          <meta property="og:title" content="Abzorithm" />
-          <meta
-            property="og:description"
-            content="From junior to Google Engineer. Ushbu saytda siz dasturlash masalalarini yeching."
-            />
-        <meta property="og:image" content="https://i.ibb.co/zVxQ5BLZ/icons.png" />
-          <meta property="og:url" content="https://www.abzorithm.site/" />
-          <meta property="og:type" content="website" />
-        </Helmet>
-
         <Navbar
           tokens={tokens}
           setTokens={setTokens}
@@ -84,18 +71,6 @@ function Routers() {
             path="/codepanels/:slug"
             element={
               <>
-                <Helmet>
-                  <title>Abzorithm - Code Panel</title>
-                  <meta property="og:title" content="Abzorithm - Code Panel" />
-                  <meta
-                    property="og:description"
-                    content="Dasturlash masalalarini yechish paneli."
-                  />
-                  <meta
-                    property="og:image"
-                    content="https://abzorithm.site/logo.jpg"
-                  />
-                </Helmet>
                 <CodePanels
                   profil={profil}
                   setProfil={setProfil}
@@ -108,18 +83,6 @@ function Routers() {
             path="/leaderboard"
             element={
               <>
-                <Helmet>
-                  <title>Abzorithm - Leaderboard</title>
-                  <meta property="og:title" content="Abzorithm - Leaderboard" />
-                  <meta
-                    property="og:description"
-                    content="Eng yaxshi dasturchilar reytingi."
-                  />
-                  <meta
-                    property="og:image"
-                    content="https://abzorithm.site/logo.jpg"
-                  />
-                </Helmet>
                 <LeaderBoard
                   ratingUser={ratingUser}
                   setRatingUser={setRatingUser}
@@ -131,9 +94,6 @@ function Routers() {
             path="/signIn"
             element={
               <>
-                <Helmet>
-                  <title>Abzorithm - Sign In</title>
-                </Helmet>
                 <SignIn setTokens={setTokens} setProfilMe={setProfilMe} />
               </>
             }
@@ -143,9 +103,6 @@ function Routers() {
             path="/profil"
             element={
               <>
-                <Helmet>
-                  <title>Abzorithm - Profil</title>
-                </Helmet>
                 <ProfilMe
                   profil={profil}
                   setProfil={setProfil}
