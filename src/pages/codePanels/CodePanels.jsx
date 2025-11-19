@@ -52,23 +52,36 @@ function CodePanels({ profil, setProfil, setProblemData }) {
   }, [slug]);
 
   // 🔹 Masala va test case’larni olish
+  // 🔹 Masala va test case’larni olish
   useEffect(() => {
     if (!details?.id) return;
 
     const fetchMasalaAndCases = async () => {
       try {
+        // ❗ Tillar ro‘yxati (backenddan keladi)
+        const languages = details?.languages || details?.language_options;
+
+        // ❗ Avtomatik default til
+        const selectedLanguage = languages?.[0] || "python";
+
+        // ❗ Tilni frontend state’da saqlaymiz
+        setCodeBy((prev) => ({ ...prev, selectedLanguage }));
+
+        // ❗ GET template (til bilan birga!)
         const [masala, cases] = await Promise.all([
-          getMasala(details?.id),
+          getMasala(details.id, selectedLanguage),
           getTestCase(),
         ]);
 
         setCodeBy(masala || null);
+
         if (Array.isArray(cases)) {
           setTestCase(cases);
 
           const filtered = cases.filter(
             (c) => c.problem === details.id && c.is_hidden === false
           );
+
           if (filtered.length > 0) setActiveCaseId(filtered[0].id);
         }
       } catch (error) {

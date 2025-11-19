@@ -48,8 +48,6 @@ export const getProblemsDetails = (slug) => {
 };
 
 export const getMasala = async (id, language) => {
-  if (!id) return null;
-
   const myHeaders = new Headers();
   myHeaders.append("Authorization", `Bearer ${getToken()}`);
 
@@ -59,16 +57,17 @@ export const getMasala = async (id, language) => {
     redirect: "follow",
   };
 
-  const res = await fetch(`${baseUrl}/submissions/template/${id}/${language}/`, requestOptions);
-
-  if (!res.ok) {
-    console.warn("Template not found for:", language, "trying fallback…");
-    return null;
-  }
-
-  return await res.json();
+  return fetch(
+    `${baseUrl}/submissions/template/${id}/?language=${language}`,
+    requestOptions
+  )
+    .then((response) => response.json())
+    .then((result) => {
+      console.log(result);
+      return result;
+    })
+    .catch((error) => console.error(error));
 };
-
 
 export const getTestCase = () => {
   const requestOptions = {

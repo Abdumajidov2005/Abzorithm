@@ -20,26 +20,30 @@ export default function CodeEditor({
   const [language, setLanguage] = useState(null);
   const [selectionOpen, setSelectionOpen] = useState(false);
 
-  const ref = useRef(null);
   const optionRef = useRef(null);
   const editorRef = useRef(null);
 
-  // 🔥 backend formatiga moslash
+  // Backend tillarni to'g'ri normalize qilish
   const normalizeLanguages = (langs) => {
     if (!langs) return [];
-    if (!Array.isArray(langs)) return [];
-    return langs.map((l) => (Array.isArray(l) ? l[0] : l));
+    if (Array.isArray(langs)) return langs;  // BU YER YETADI
+    return [];
   };
 
+  // Template yuklash
   const loadTemplate = async (lang) => {
     const res = await getMasala(problemId, lang);
-    console.log("🔥 TEMPLATE RESPONSE:", res);
 
-    // backenddan tillarni olish
-    const langs = normalizeLanguages(res?.languages);
+    if (!res) {
+      console.error("❌ Template load ERROR");
+      return;
+    }
+
+    // backenddan kelgan tillar
+    const langs = normalizeLanguages(res.languages);
     setLanguages(langs);
 
-    // default language tanlash
+    // agar til hali tanlanmagan bo‘lsa — 1-tilni olamiz
     if (!language && langs.length > 0) {
       setLanguage(langs[0]);
     }
@@ -47,95 +51,89 @@ export default function CodeEditor({
     setCodeBy(res);
   };
 
+  // Boshlang‘ich yuklash
   useEffect(() => {
     if (!problemId) return;
 
     getProfilMe()?.then(setProfil);
 
-    loadTemplate(language ?? "python"); // recursionni oldini oladi
+    // birinchi yuklashda python bo'ladi (fallback)
+    loadTemplate(language ?? "python");
   }, [problemId]);
 
-  const beforeMount = (monaco) => {
-    monaco.editor.defineTheme("myCustomTheme", {
-      base: "vs",
-      inherit: false,
-      rules: [
-        { token: "keyword", foreground: "#ff3300ff" },
-        { token: "string", foreground: "#137613ff" },
-        { token: "comment", foreground: "#aaaaaaff", fontStyle: "italic" },
-      ],
-      colors: {
-        "editor.background": "#FAF8F8",
-        "editor.foreground": "#1b31bdff",
-      },
-    });
-  };
-
-  const submitCode = () => {
+  // Kodni backendga yuborish
+  const submitCode = async () => {
     if (!codeBy?.template_code) return;
 
     setLoaderRunTime(true);
 
-    fetch(`${baseUrl}/submissions/create/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${getToken()}`,
-      },
-      body: JSON.stringify({
-        user: profil?.id,
-        problem: problemId,
-        code: codeBy.template_code,
-        language,
-      }),
-    })
-      .then((r) => r.json())
-      .then((res) => {
-        const s = (res.status || "").toLowerCase();
-        const statusColor = s.includes("accepted")
-          ? "green"
-          : s.includes("wrong")
-          ? "red"
-          : s.includes("runtime")
-          ? "orange"
-          : s.includes("time limit")
-          ? "purple"
-          : "gray";
+    try {
+      const response = await fetch(`${baseUrl}/submissions/create/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getToken()}`,
+        },
+        body: JSON.stringify({
+          user: profil?.id,
+          problem: problemId,
+          code: codeBy.template_code,
+          language,
+        }),
+      });
 
-        setOutput({
-          id: res.id,
-          status: res.status,
-          color: statusColor,
-          time: Math.floor((res.execution_time || 0) * 1000) / 1000,
-          failed_test: res.failed_test ?? "-",
-          error_input: res.error_input ?? "-",
-          error_expected: res.error_expected ?? "-",
-          error_output: res.error_output ?? "-",
-        });
-      })
-      .finally(() => setLoaderRunTime(false));
+      const res = await response.json();
+
+      const s = (res.status || "").toLowerCase();
+      const color = s.includes("accepted")
+        ? "green"
+        : s.includes("wrong")
+        ? "red"
+        : s.includes("runtime")
+        ? "orange"
+        : s.includes("time limit")
+        ? "purple"
+        : "gray";
+
+      setOutput({
+        id: res.id,
+        status: res.status,
+        color,
+        time: Math.floor((res.execution_time || 0) * 1000) / 1000,
+        failed_test: res.failed_test ?? "-",
+        error_input: res.error_input ?? "-",
+        error_expected: res.error_expected ?? "-",
+        error_output: res.error_output ?? "-",
+      });
+    } catch (err) {
+      setOutput({
+        status: "Error",
+        color: "red",
+        error_output: err.message,
+      });
+    } finally {
+      setLoaderRunTime(false);
+    }
   };
 
+  // Kodni tozalash
   const cleanCode = () => {
     if (!editorRef.current) return;
+
     const cleaned = editorRef.current
       .getValue()
       .split("\n")
-      .map((line) => line.replace(/\t/g, "    ").trimEnd())
+      .map((l) => l.replace(/\t/g, "    ").trimEnd())
       .join("\n");
 
     editorRef.current.setValue(cleaned);
     setCodeBy((prev) => ({ ...prev, template_code: cleaned }));
   };
 
+  // Outside click — selectni yopish
   useEffect(() => {
     const closeDropdown = (e) => {
-      if (
-        ref.current &&
-        !ref.current.contains(e.target) &&
-        optionRef.current &&
-        !optionRef.current.contains(e.target)
-      ) {
+      if (optionRef.current && !optionRef.current.contains(e.target)) {
         setSelectionOpen(false);
       }
     };
@@ -147,10 +145,10 @@ export default function CodeEditor({
     <div className="code-boxs">
       <div className="submitions">
         <div className="submit-inputs">
-          {/* 🔥 LANGUAGE SELECT */}
+
+          {/* Language Select */}
           <div ref={optionRef} className="select-box">
             <div
-              ref={ref}
               className="selected"
               onClick={() => setSelectionOpen(!selectionOpen)}
             >
@@ -167,7 +165,7 @@ export default function CodeEditor({
                     onClick={() => {
                       setLanguage(lang);
                       setSelectionOpen(false);
-                      loadTemplate(lang); //🔥 template dynamic changelanadi
+                      loadTemplate(lang);
                     }}
                   >
                     {lang}
@@ -201,7 +199,21 @@ export default function CodeEditor({
         height="400px"
         language={language}
         theme="myCustomTheme"
-        beforeMount={beforeMount}
+        beforeMount={(monaco) => {
+          monaco.editor.defineTheme("myCustomTheme", {
+            base: "vs",
+            inherit: false,
+            rules: [
+              { token: "keyword", foreground: "#ff3300ff" },
+              { token: "string", foreground: "#137613ff" },
+              { token: "comment", foreground: "#aaaaaaff", fontStyle: "italic" },
+            ],
+            colors: {
+              "editor.background": "#FAF8F8",
+              "editor.foreground": "#1b31bdff",
+            },
+          });
+        }}
         onMount={(editor) => (editorRef.current = editor)}
         value={codeBy?.template_code || ""}
         onChange={(value) =>
