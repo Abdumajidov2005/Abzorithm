@@ -37,7 +37,7 @@ function Routers() {
             property="og:description"
             content="From junior to Google Engineer. Ushbu saytda siz dasturlash masalalarini yeching."
           />
-          <meta property="og:image" content="https://i.postimg.cc/ZKZngv1F/logo.jpg" />
+          <meta property="og:image" content="https://ibb.co/HT4B2bMq" />
           <meta property="og:url" content="https://www.abzorithm.site/" />
           <meta property="og:type" content="website" />
         </Helmet>
