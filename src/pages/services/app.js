@@ -56,14 +56,19 @@ export const getMasala = async (id, language) => {
     headers: myHeaders,
     redirect: "follow",
   };
-
   return fetch(
-    `${baseUrl}/submissions/template/${id}/?language=${language}`,
+    `${baseUrl}/submissions/template/${id}/${language}/`,
     requestOptions
   )
-    .then((response) => response.json())
+    .then((response) => {
+      if (!response.ok) {
+        console.error("API ERROR:", response.status);
+        return null;
+      }
+      return response.json();
+    })
     .then((result) => {
-      console.log(result);
+      // console.log("Template:", result);
       return result;
     })
     .catch((error) => console.error(error));
@@ -86,12 +91,9 @@ export const getTestCase = () => {
     });
 };
 
-// apini shundan olaman
-
 export const getProfilMe = () => {
   const token = getToken();
 
-  // TOKEN BO‘LMASA API CHAQLANMASIN
   if (!token) return Promise.resolve(null);
 
   const myHeaders = new Headers({

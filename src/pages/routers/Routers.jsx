@@ -44,22 +44,6 @@ function Routers() {
             path="/"
             element={
               <>
-                <Helmet>
-                  <title>Abzorithm - Masalalar</title>
-                  <meta property="og:title" content="Abzorithm - Masalalar" />
-                  <meta
-                    property="og:description"
-                    content="Dasturlash masalalarini yeching va bilimlaringizni oshiring."
-                  />
-                  <meta
-                    property="og:image"
-                    content="https://abzorithm.site/logo.jpg"
-                  />
-                  <meta
-                    property="og:url"
-                    content="https://www.abzorithm.site/"
-                  />
-                </Helmet>
                 <Problems
                   setProblemData={setProblemData}
                   problemData={problemData}
