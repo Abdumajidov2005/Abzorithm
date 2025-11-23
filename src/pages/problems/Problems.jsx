@@ -13,7 +13,7 @@ function Problems({ problemData, setProblemData }) {
   const [search, setSearch] = useState("");
   const [difficulty, setDifficulty] = useState("");
 
-  // LOAD DEFAULT
+  // LOAD DEFAULT DATA ONLY ONCE
   useEffect(() => {
     loadProblems();
   }, []);
@@ -25,9 +25,10 @@ function Problems({ problemData, setProblemData }) {
       .finally(() => setLoader(false));
   };
 
-  // FILTER FUNCTION
+  // GET FILTERED DATA
   const getFilterData = () => {
     setLoader(true);
+
     const params = new URLSearchParams({
       search,
       difficulty,
@@ -40,10 +41,14 @@ function Problems({ problemData, setProblemData }) {
       .finally(() => setLoader(false));
   };
 
-  // REAL-TIME SEARCH (DEBOUNCE 500ms)
+  // SMART FILTER (ONLY TRIGGER WHEN SEARCH OR DIFFICULTY IS NOT EMPTY)
   useEffect(() => {
     const delay = setTimeout(() => {
-      getFilterData();
+      if (search || difficulty) {
+        getFilterData();
+      } else {
+        loadProblems(); // reset to default
+      }
     }, 500);
 
     return () => clearTimeout(delay);
@@ -53,6 +58,7 @@ function Problems({ problemData, setProblemData }) {
     <>
       <div className="problems">
         <div className="container">
+
           {/* SEARCH PANEL */}
           <div className="search_panel">
             <div className="search_panel-title">
@@ -110,6 +116,8 @@ function Problems({ problemData, setProblemData }) {
                     }}
                   >
                     <div className="title-problems">
+
+                      {/* SOLVED CHECK */}
                       <div className="sloved">
                         {item?.is_solved && (
                           <div className="slove">
@@ -118,6 +126,7 @@ function Problems({ problemData, setProblemData }) {
                           </div>
                         )}
                       </div>
+
                       <span>{index + 1}.</span>
                       <h3>{item?.title}</h3>
                     </div>
