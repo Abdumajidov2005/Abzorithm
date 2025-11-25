@@ -141,7 +141,7 @@ function ProfilMe({ profil, setProfil, setProfilMe }) {
                 <span>Score:</span> <span>{profil?.score}</span>
               </p>
               <p>
-                <span>Country:</span> <span>{country}</span>
+                <span>Yo'nalishi:</span> <span>{country}</span>
               </p>
             </div>
 
@@ -173,7 +173,7 @@ function ProfilMe({ profil, setProfil, setProfilMe }) {
                 </span>
               </div>
               <div className="creates">
-                <span>Country:</span>
+                <span>Yo'nalishi:</span>
                 <span>
                   <input
                     value={country}
