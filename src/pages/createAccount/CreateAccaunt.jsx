@@ -96,7 +96,7 @@ function CreateAccaunt() {
             </div>
 
             <div className="settings">
-              <label htmlFor="">Country</label>
+              <label htmlFor="">Yo'nalish</label>
               <input
                 onChange={(e) => {
                   setCountry(e.target.value);

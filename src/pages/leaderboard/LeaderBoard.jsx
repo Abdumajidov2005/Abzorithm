@@ -39,7 +39,13 @@ function LeaderBoard({ ratingUser, setRatingUser }) {
                   <div key={item?.id} className="user-levles">
                     <li>
                       <div className="avatar">
-                        <span className="rating-records">{index + 1}</span>
+                        <span
+                          className={`rating-records ${
+                            index === 0 ? "active" : ""
+                          }`}
+                        >
+                          {index + 1}
+                        </span>
                         <img
                           src={item?.avatar || "/imgs/icons.png"}
                           onError={(e) => {
@@ -47,7 +53,8 @@ function LeaderBoard({ ratingUser, setRatingUser }) {
                             e.target.src = "/imgs/icons.png";
                           }}
                           alt={item?.username}
-                        />n
+                        />
+                        n
                       </div>
                     </li>
                     <li>
@@ -59,11 +66,15 @@ function LeaderBoard({ ratingUser, setRatingUser }) {
                       <p>{item?.country.length == 0 ? "-" : item?.country}</p>
                     </li>
                     <li>
-                      <p>{item?.bio?.length == 0 ? "-" : item?.bio.length > 40 ? item?.bio.slice(0,40)+"...":item?.bio}</p>
+                      <p>
+                        {item?.bio?.length == 0
+                          ? "-"
+                          : item?.bio.length > 40
+                          ? item?.bio.slice(0, 40) + "..."
+                          : item?.bio}
+                      </p>
                     </li>
-                    <li>
-                      {item?.score*10}
-                    </li>
+                    <li>{item?.score * 10}</li>
                     <li>
                       <p>{item?.score}</p>
                     </li>

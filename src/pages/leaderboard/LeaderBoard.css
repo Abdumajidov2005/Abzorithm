@@ -109,3 +109,7 @@
   width: 100%;
   background-color: rgba(235, 235, 235, 0.699);
 }
+
+.rating-records.active{
+  background-color: green;
+}
