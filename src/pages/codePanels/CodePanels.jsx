@@ -240,7 +240,7 @@ function CodePanels({ profil, setProfil, setProblemData }) {
                       {output.failed_test && (
                         <p>Failed Test: {output.failed_test}</p>
                       )}
-                      {output.error_input && <p>Input: {output.error_input}</p>}
+                      {output.error_input && <p>Input : {output.error_input}</p>}
                       {output.error_expected && (
                         <p>Expected: {output.error_expected}</p>
                       )}

@@ -7,6 +7,17 @@ import { FaFilter } from "react-icons/fa";
 import { FiSearch } from "react-icons/fi";
 import { baseUrl } from "../services/config";
 
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  InputAdornment,
+  OutlinedInput,
+} from "@mui/material";
+import { LuFilter } from "react-icons/lu";
+// import FilterListIcon from "@mui/icons-material/FilterList";
+
 function Problems({ problemData, setProblemData }) {
   const [loader, setLoader] = useState(false);
   const navigate = useNavigate();
@@ -58,7 +69,6 @@ function Problems({ problemData, setProblemData }) {
     <>
       <div className="problems">
         <div className="container">
-
           {/* SEARCH PANEL */}
           <div className="search_panel">
             <div className="search_panel-title">
@@ -74,6 +84,29 @@ function Problems({ problemData, setProblemData }) {
                   <FiSearch />
                 </label>
               </div>
+
+              <FormControl fullWidth>
+                <InputLabel id="demo-select-label">Filter</InputLabel>
+
+                <Select
+                  labelId="demo-select-label"
+                  input={
+                    <OutlinedInput
+                      startAdornment={
+                        <InputAdornment position="start">
+                          <LuFilter />
+                        </InputAdornment>
+                      }
+                      label="Filter"
+                    />
+                  }
+                  defaultValue=""
+                >
+                  <MenuItem value="1">Option 1</MenuItem>
+                  <MenuItem value="2">Option 2</MenuItem>
+                  <MenuItem value="3">Option 3</MenuItem>
+                </Select>
+              </FormControl>
 
               {/* DIFFICULTY FILTER */}
               <select
@@ -116,7 +149,6 @@ function Problems({ problemData, setProblemData }) {
                     }}
                   >
                     <div className="title-problems">
-
                       {/* SOLVED CHECK */}
                       <div className="sloved">
                         {item?.is_solved && (
