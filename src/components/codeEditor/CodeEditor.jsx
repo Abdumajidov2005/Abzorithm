@@ -16,7 +16,6 @@ export default function CodeEditor({
   setTestCaseWatch,
   setLoaderRunTime,
 }) {
-
   const languages = ["python", "javascript", "dart"];
 
   const [language, setLanguage] = useState("python");
@@ -28,32 +27,24 @@ export default function CodeEditor({
   const loadTemplate = async (lang) => {
     const res = await getMasala(problemId, lang);
 
-
     if (!res) {
       console.error(" Template  ERROR");
       return;
     }
-
     setCodeBy(res);
-
-
   };
 
   useEffect(() => {
     if (!problemId) return;
 
-
     getProfilMe()?.then(setProfil);
 
     loadTemplate(language);
-
-
   }, [problemId]);
 
   const submitCode = async () => {
     if (!codeBy?.template_code) return;
     setLoaderRunTime(true);
-
 
     try {
       const response = await fetch(`${baseUrl}/submissions/create/`, {
@@ -75,12 +66,12 @@ export default function CodeEditor({
       const color = s.includes("accepted")
         ? "green"
         : s.includes("wrong")
-          ? "red"
-          : s.includes("runtime")
-            ? "orange"
-            : s.includes("time limit")
-              ? "purple"
-              : "gray";
+        ? "red"
+        : s.includes("runtime")
+        ? "orange"
+        : s.includes("time limit")
+        ? "purple"
+        : "gray";
 
       setOutput({
         id: res.id,
@@ -101,12 +92,9 @@ export default function CodeEditor({
     } finally {
       setLoaderRunTime(false);
     }
-
-
   };
   const cleanCode = () => {
     if (!editorRef.current) return;
-
 
     const cleaned = editorRef.current
       .getValue()
@@ -116,8 +104,6 @@ export default function CodeEditor({
 
     editorRef.current.setValue(cleaned);
     setCodeBy((prev) => ({ ...prev, template_code: cleaned }));
-
-
   };
   useEffect(() => {
     const closeDropdown = (e) => {
@@ -129,84 +115,91 @@ export default function CodeEditor({
     return () => document.removeEventListener("mousedown", closeDropdown);
   }, []);
 
-  return (<div className="code-boxs"> <div className="submitions"> <div className="submit-inputs">
-
-    <div ref={optionRef} className="select-box">
-      <div
-        className="selected"
-        onClick={() => setSelectionOpen(!selectionOpen)}
-      >
-        {language}
-        <span className={`arrow ${selectionOpen ? "up" : "down"}`} />
-      </div>
-
-      {selectionOpen && (
-        <div className="options1 show">
-          {languages.map((lang, idx) => (
+  return (
+    <div className="code-boxs">
+      {" "}
+      <div className="submitions">
+        {" "}
+        <div className="submit-inputs">
+          <div ref={optionRef} className="select-box">
             <div
-              key={idx}
-              className="option"
-              onClick={() => {
-                setLanguage(lang);
-                setSelectionOpen(false);
-                loadTemplate(lang);
-              }}
+              className="selected"
+              onClick={() => setSelectionOpen(!selectionOpen)}
             >
-              {lang}
+              {language}
+              <span className={`arrow ${selectionOpen ? "up" : "down"}`} />
             </div>
-          ))}
+
+            {selectionOpen && (
+              <div className="options1 show">
+                {languages.map((lang, idx) => (
+                  <div
+                    key={idx}
+                    className="option"
+                    onClick={() => {
+                      setLanguage(lang);
+                      setSelectionOpen(false);
+                      loadTemplate(lang);
+                    }}
+                  >
+                    {lang}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <button
+            className="run-btn"
+            onClick={() => {
+              submitCode();
+              setRunTimeWatch(true);
+              setTestCaseWatch(false);
+            }}
+          >
+            Submit
+          </button>
         </div>
-      )}
+        <div className="action-buttons">
+          <button onClick={cleanCode} className="clean-btn">
+            Clean Code
+          </button>
+        </div>
+      </div>
+      <Editor
+        width="100%"
+        height="400px"
+        language={language}
+        theme="myCustomTheme"
+        beforeMount={(monaco) => {
+          monaco.editor.defineTheme("myCustomTheme", {
+            base: "vs",
+            inherit: false,
+            rules: [
+              { token: "keyword", foreground: "#ff3300ff" },
+              { token: "string", foreground: "#137613ff" },
+              {
+                token: "comment",
+                foreground: "#aaaaaaff",
+                fontStyle: "italic",
+              },
+            ],
+            colors: {
+              "editor.background": "#FAF8F8",
+              "editor.foreground": "#1b31bdff",
+            },
+          });
+        }}
+        onMount={(editor) => (editorRef.current = editor)}
+        value={codeBy?.template_code || ""}
+        onChange={(value) =>
+          setCodeBy((prev) => ({ ...prev, template_code: value || "" }))
+        }
+        options={{
+          minimap: { enabled: false },
+          fontSize: 14,
+        }}
+      />
     </div>
-
-    <button
-      className="run-btn"
-      onClick={() => {
-        submitCode();
-        setRunTimeWatch(true);
-        setTestCaseWatch(false);
-      }}
-    >
-      Submit
-    </button>
-  </div>
-
-    <div className="action-buttons">
-      <button onClick={cleanCode} className="clean-btn">
-        Clean Code
-      </button>
-    </div>
-  </div>
-    <Editor
-      width="100%"
-      height="400px"
-      language={language}
-      theme="myCustomTheme"
-      beforeMount={(monaco) => {
-        monaco.editor.defineTheme("myCustomTheme", {
-          base: "vs",
-          inherit: false,
-          rules: [
-            { token: "keyword", foreground: "#ff3300ff" },
-            { token: "string", foreground: "#137613ff" },
-            { token: "comment", foreground: "#aaaaaaff", fontStyle: "italic" },
-          ],
-          colors: {
-            "editor.background": "#FAF8F8",
-            "editor.foreground": "#1b31bdff",
-          },
-        });
-      }}
-      onMount={(editor) => (editorRef.current = editor)}
-      value={codeBy?.template_code || ""}
-      onChange={(value) =>
-        setCodeBy((prev) => ({ ...prev, template_code: value || "" }))
-      }
-      options={{
-        minimap: { enabled: false },
-        fontSize: 14,
-      }}
-    />
-  </div>
   );
 }

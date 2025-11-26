@@ -76,19 +76,29 @@ function Problems({ problemData, setProblemData }) {
                 <input
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  type="text"
+                  type="search"
                   id="searchs"
                   placeholder="Search problems..."
                 />
-                <label htmlFor="searchs">
-                  <FiSearch />
-                </label>
+                {search ? (
+                  <span
+                    className="search_favicons"
+                    onClick={() => setSearch("")}
+                  >
+                    ✕
+                  </span>
+                ) : (
+                  <label htmlFor="searchs">
+                    <FiSearch />
+                  </label>
+                )}
               </div>
 
-              <FormControl fullWidth>
+              <FormControl className="form_control">
                 <InputLabel id="demo-select-label">Filter</InputLabel>
 
                 <Select
+                  className="select-filter"
                   labelId="demo-select-label"
                   input={
                     <OutlinedInput
@@ -100,36 +110,26 @@ function Problems({ problemData, setProblemData }) {
                       label="Filter"
                     />
                   }
-                  defaultValue=""
+                  defaultValue={difficulty}
+                  onChange={(e) => setDifficulty(e.target.value)}
                 >
-                  <MenuItem value="1">Option 1</MenuItem>
-                  <MenuItem value="2">Option 2</MenuItem>
-                  <MenuItem value="3">Option 3</MenuItem>
+                  <MenuItem value="">All</MenuItem>
+                  <MenuItem value="Easy">Easy</MenuItem>
+                  <MenuItem value="Medium">Medium</MenuItem>
+                  <MenuItem value="Hard">Hard</MenuItem>
                 </Select>
               </FormControl>
-
-              {/* DIFFICULTY FILTER */}
-              <select
-                value={difficulty}
-                onChange={(e) => setDifficulty(e.target.value)}
-                className="difficulty-filter"
-              >
-                <option value="">All</option>
-                <option value="Easy">Easy</option>
-                <option value="Medium">Medium</option>
-                <option value="Hard">Hard</option>
-              </select>
-
-              <p>
-                <FaFilter />
-              </p>
             </div>
           </div>
 
           {/* PROBLEMS LIST */}
           <div className="problems-panel">
             <ul className="problems_questions">
-              {loader ? (
+              {search ? (
+                <div className="search_gif">
+                  <img src="imgs/no-result.gif" alt="" />
+                </div>
+              ) : loader ? (
                 <div className="loader-border">
                   {[...Array(8)].map((_, i) => (
                     <div key={i} className="loader"></div>
