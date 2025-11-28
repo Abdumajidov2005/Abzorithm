@@ -11,6 +11,7 @@ import { FiCamera } from "react-icons/fi";
 
 function ProfilMe({ profil, setProfil, setProfilMe }) {
   const [editInformation, setEditInformation] = useState(false);
+  const [profilLoader, setProfilLoader] = useState(false);
 
   const [bio, setBio] = useState("");
   const [avatarPreview, setAvatarPreview] = useState("");
@@ -29,6 +30,7 @@ function ProfilMe({ profil, setProfil, setProfilMe }) {
   }, [setProfil]);
 
   const editProfil = () => {
+    setProfilLoader(true);
     const myHeaders = new Headers();
     getToken() ? myHeaders.append("Authorization", `Bearer ${getToken()}`) : "";
     const formdata = new FormData();
@@ -48,11 +50,14 @@ function ProfilMe({ profil, setProfil, setProfilMe }) {
     fetch(`${baseUrl}/users/me/update/`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
-        console.log(result);
+        // console.log(result);
         getProfilMe()?.then(setProfilMe);
         setEditInformation(false);
       })
-      .catch((error) => console.error(error));
+      .catch((error) => console.error(error))
+      .finally(() => {
+        setProfilLoader(false);
+      });
   };
 
   const handleAvatarChange = (e) => {
@@ -203,6 +208,9 @@ function ProfilMe({ profil, setProfil, setProfilMe }) {
               </div>
             </form>
           </div>
+          <div
+            className={`profil_me_loader ${profilLoader ? "active" : ""}`}
+          ></div>
         </div>
       </div>
     </div>

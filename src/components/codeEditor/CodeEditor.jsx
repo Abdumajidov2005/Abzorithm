@@ -116,10 +116,9 @@ export default function CodeEditor({
   }, []);
 
   return (
+    
     <div className="code-boxs">
-      {" "}
       <div className="submitions">
-        {" "}
         <div className="submit-inputs">
           <div ref={optionRef} className="select-box">
             <div
@@ -192,9 +191,11 @@ export default function CodeEditor({
         }}
         onMount={(editor) => (editorRef.current = editor)}
         value={codeBy?.template_code || ""}
-        onChange={(value) =>
-          setCodeBy((prev) => ({ ...prev, template_code: value || "" }))
-        }
+        defaultValue={codeBy?.template_code}
+        onChange={(value) => {
+          codeBy.template_code = value;
+          setCodeBy({ ...codeBy });
+        }}
         options={{
           minimap: { enabled: false },
           fontSize: 14,

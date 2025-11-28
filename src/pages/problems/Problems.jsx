@@ -125,18 +125,16 @@ function Problems({ problemData, setProblemData }) {
           {/* PROBLEMS LIST */}
           <div className="problems-panel">
             <ul className="problems_questions">
-              {search ? (
-                <div className="search_gif">
-                  <img src="imgs/no-result.gif" alt="" />
-                </div>
-              ) : loader ? (
+              {loader ? (
+                // LOADER
                 <div className="loader-border">
                   {[...Array(8)].map((_, i) => (
                     <div key={i} className="loader"></div>
                   ))}
                 </div>
-              ) : (
-                problemData?.map((item, index) => (
+              ) : problemData?.length ? (
+                // DATA BOR BO'LSA
+                problemData.map((item, index) => (
                   <Link
                     className="card-problem"
                     key={item?.id}
@@ -149,7 +147,6 @@ function Problems({ problemData, setProblemData }) {
                     }}
                   >
                     <div className="title-problems">
-                      {/* SOLVED CHECK */}
                       <div className="sloved">
                         {item?.is_solved && (
                           <div className="slove">
@@ -172,6 +169,11 @@ function Problems({ problemData, setProblemData }) {
                     </div>
                   </Link>
                 ))
+              ) : (
+                // HECH NIMA TOPILMAGANDA
+                <div className="search_gif">
+                  <img src="imgs/no-result.gif" alt="no result" />
+                </div>
               )}
             </ul>
           </div>
