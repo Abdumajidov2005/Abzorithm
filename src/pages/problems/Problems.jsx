@@ -3,7 +3,6 @@ import "./Problems.css";
 import { Link, useNavigate } from "react-router-dom";
 import { getProblems } from "../services/app";
 import { getToken } from "../services/token";
-import { FaFilter } from "react-icons/fa";
 import { FiSearch } from "react-icons/fi";
 import { baseUrl } from "../services/config";
 
@@ -38,17 +37,23 @@ function Problems({ problemData, setProblemData }) {
 
   // GET FILTERED DATA
   const getFilterData = () => {
+    const token = getToken();
+
+    if (!token) {
+      navigate("/create accaunt");
+      return;
+    }
+
     setLoader(true);
 
-    const params = new URLSearchParams({
-      search,
-      difficulty,
-    });
+    const params = new URLSearchParams();
+
+    if (search.trim()) params.append("search", search);
+    if (difficulty) params.append("difficulty", difficulty);
 
     fetch(`${baseUrl}/problems/?${params.toString()}`)
       .then((res) => res.json())
       .then((data) => setProblemData(data))
-      .catch(console.error)
       .finally(() => setLoader(false));
   };
 
@@ -110,7 +115,7 @@ function Problems({ problemData, setProblemData }) {
                       label="Filter"
                     />
                   }
-                  defaultValue={difficulty}
+                  value={difficulty}
                   onChange={(e) => setDifficulty(e.target.value)}
                 >
                   <MenuItem value="">All</MenuItem>
@@ -124,7 +129,7 @@ function Problems({ problemData, setProblemData }) {
 
           {/* PROBLEMS LIST */}
           <div className="problems-panel">
-            <ul className="problems_questions">
+            <div className="problems_questions">
               {loader ? (
                 // LOADER
                 <div className="loader-border">
@@ -132,7 +137,11 @@ function Problems({ problemData, setProblemData }) {
                     <div key={i} className="loader"></div>
                   ))}
                 </div>
-              ) : problemData?.length ? (
+              ) : problemData?.length === 0 ? (
+                <div className="search_gif">
+                  <img src="imgs/no-result.gif" alt="no result" />
+                </div>
+              ) : (
                 // DATA BOR BO'LSA
                 problemData.map((item, index) => (
                   <Link
@@ -169,13 +178,8 @@ function Problems({ problemData, setProblemData }) {
                     </div>
                   </Link>
                 ))
-              ) : (
-                // HECH NIMA TOPILMAGANDA
-                <div className="search_gif">
-                  <img src="imgs/no-result.gif" alt="no result" />
-                </div>
               )}
-            </ul>
+            </div>
           </div>
         </div>
       </div>

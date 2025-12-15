@@ -63,14 +63,14 @@ function LeaderBoard({ ratingUser, setRatingUser }) {
                           ? item?.username?.slice(0, 10) + "..."
                           : item?.username}
                       </h1>
-                      <p>{item?.country.length == 0 ? "-" : item?.country}</p>
+                      <p>{item?.course.length == 0 ? "-" : item?.course}</p>
                     </li>
                     <li>
                       <p>
                         {item?.bio?.length == 0
                           ? "-"
-                          : item?.bio.length > 40
-                          ? item?.bio.slice(0, 40) + "..."
+                          : item?.bio?.length > 40
+                          ? item?.bio?.slice(0, 40) + "..."
                           : item?.bio}
                       </p>
                     </li>

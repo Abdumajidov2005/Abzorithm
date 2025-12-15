@@ -11,6 +11,7 @@ function CreateAccaunt() {
   const [password, setPassword] = useState("");
   // const [bio, setBio] = useState("");
   const [country, setCountry] = useState("");
+  const [project1_id, setProject1_id] = useState("");
 
   const navigate = useNavigate();
 
@@ -23,7 +24,8 @@ function CreateAccaunt() {
       email: email,
       password: password,
       // bio: bio,
-      country: country,
+      course: country,
+      project1_id: project1_id,
     });
 
     const requestOptions = {
@@ -61,6 +63,17 @@ function CreateAccaunt() {
             }}
             className="accaunt-settings"
           >
+            <div className="settings">
+              <label htmlFor="">Codial login:</label>
+              <input
+                onChange={(e) => {
+                  setProject1_id(e.target.value);
+                }}
+                type="text"
+                required
+                placeholder="Login..."
+              />
+            </div>
             <div className="settings">
               <label htmlFor="">Username:</label>
               <input
@@ -102,7 +115,7 @@ function CreateAccaunt() {
                   setCountry(e.target.value);
                 }}
                 type="text"
-                placeholder="Country"
+                placeholder="Yo'nalish"
               />
             </div>
             <div className="accaunt-btns">
