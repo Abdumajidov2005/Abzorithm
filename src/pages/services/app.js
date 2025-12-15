@@ -131,3 +131,42 @@ export const getLeaderBoard = () => {
       return [];
     });
 };
+
+
+// const myHeaders = new Headers();
+// myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY4NDA3MDc5LCJpYXQiOjE3NjU4MTUwNzksImp0aSI6ImI5MmQxZDRhMTIwMDQyNmRhYjgzMzRjZDZjNjk2MjYwIiwidXNlcl9pZCI6MzF9.ihD48RPWWAE-0cEjoJchX7EpenCaNQyIK-LgFzHCFPQ");
+
+// const formdata = new FormData();
+// formdata.append("difficulty", "Easy");
+
+// const requestOptions = {
+//   method: "GET",
+//   headers: myHeaders,
+//   body: formdata,
+//   redirect: "follow"
+// };
+
+// fetch("https://abzorithm.abboskhoja.site/problems/?difficulty=Easy", requestOptions)
+//   .then((response) => response.text())
+//   .then((result) => console.log(result))
+//   .catch((error) => console.error(error));
+
+
+
+//   const myHeaders = new Headers();
+// myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY4NDA3MDc5LCJpYXQiOjE3NjU4MTUwNzksImp0aSI6ImI5MmQxZDRhMTIwMDQyNmRhYjgzMzRjZDZjNjk2MjYwIiwidXNlcl9pZCI6MzF9.ihD48RPWWAE-0cEjoJchX7EpenCaNQyIK-LgFzHCFPQ");
+
+// const formdata = new FormData();
+// formdata.append("search", "ikki");
+
+// const requestOptions = {
+//   method: "GET",
+//   headers: myHeaders,
+//   body: formdata,
+//   redirect: "follow"
+// };
+
+// fetch("https://abzorithm.abboskhoja.site/problems/?search=ikki", requestOptions)
+//   .then((response) => response.text())
+//   .then((result) => console.log(result))
+//   .catch((error) => console.error(error));

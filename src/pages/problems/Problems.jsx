@@ -18,57 +18,74 @@ import { LuFilter } from "react-icons/lu";
 // import FilterListIcon from "@mui/icons-material/FilterList";
 
 function Problems({ problemData, setProblemData }) {
-  const [loader, setLoader] = useState(false);
-  const navigate = useNavigate();
-  const [search, setSearch] = useState("");
-  const [difficulty, setDifficulty] = useState("");
+ const [loader, setLoader] = useState(false);
+const navigate = useNavigate();
+const [search, setSearch] = useState("");
+const [difficulty, setDifficulty] = useState("");
 
-  // LOAD DEFAULT DATA ONLY ONCE
-  useEffect(() => {
-    loadProblems();
-  }, []);
+// LOAD DEFAULT DATA
+useEffect(() => {
+  loadProblems();
+}, []);
 
-  const loadProblems = () => {
-    setLoader(true);
-    getProblems()
-      ?.then((data) => setProblemData(data))
-      .finally(() => setLoader(false));
-  };
+const loadProblems = () => {
+  const token = getToken();
 
-  // GET FILTERED DATA
-  const getFilterData = () => {
-    const token = getToken();
+  if (!token) {
+    navigate("/create accaunt");
+    return;
+  }
 
-    if (!token) {
-      navigate("/create accaunt");
-      return;
+  setLoader(true);
+
+  fetch(`${baseUrl}/problems/`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => setProblemData(data))
+    .finally(() => setLoader(false));
+};
+
+// GET FILTERED DATA (SEARCH + DIFFICULTY)
+const getFilterData = () => {
+  const token = getToken();
+
+  if (!token) {
+    navigate("/create accaunt");
+    return;
+  }
+
+  setLoader(true);
+
+  const params = new URLSearchParams();
+
+  if (search.trim()) params.append("search", search);
+  if (difficulty) params.append("difficulty", difficulty);
+
+  fetch(`${baseUrl}/problems/?${params.toString()}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => setProblemData(data))
+    .finally(() => setLoader(false));
+};
+
+// SMART FILTER WITH DEBOUNCE
+useEffect(() => {
+  const delay = setTimeout(() => {
+    if (search || difficulty) {
+      getFilterData();
+    } else {
+      loadProblems();
     }
+  }, 500);
 
-    setLoader(true);
-
-    const params = new URLSearchParams();
-
-    if (search.trim()) params.append("search", search);
-    if (difficulty) params.append("difficulty", difficulty);
-
-    fetch(`${baseUrl}/problems/?${params.toString()}`)
-      .then((res) => res.json())
-      .then((data) => setProblemData(data))
-      .finally(() => setLoader(false));
-  };
-
-  // SMART FILTER (ONLY TRIGGER WHEN SEARCH OR DIFFICULTY IS NOT EMPTY)
-  useEffect(() => {
-    const delay = setTimeout(() => {
-      if (search || difficulty) {
-        getFilterData();
-      } else {
-        loadProblems(); // reset to default
-      }
-    }, 500);
-
-    return () => clearTimeout(delay);
-  }, [search, difficulty]);
+  return () => clearTimeout(delay);
+}, [search, difficulty]);
 
   return (
     <>
