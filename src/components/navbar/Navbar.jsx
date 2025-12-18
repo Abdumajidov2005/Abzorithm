@@ -6,6 +6,9 @@ import { FaXmark } from "react-icons/fa6";
 import { getProfilMe } from "../../pages/services/app";
 import { IoExitOutline } from "react-icons/io5";
 import Button from "@mui/material/Button";
+import { getToken } from "../../pages/services/token";
+import { baseUrl } from "../../pages/services/config";
+import { toast } from "react-toastify";
 
 function Navbar({ tokens, setTokens, profilMe, setProfilMe }) {
   const navigate = useNavigate();
@@ -43,7 +46,7 @@ function Navbar({ tokens, setTokens, profilMe, setProfilMe }) {
     myHeaders.append("Authorization", `Bearer ${getToken()}`);
 
     const raw = JSON.stringify({
-      description: "test",
+      description: "Masalalar uchun",
       date: "2025-12-17",
     });
 
@@ -56,7 +59,14 @@ function Navbar({ tokens, setTokens, profilMe, setProfilMe }) {
 
     fetch(`${baseUrl}/send-points/`, requestOptions)
       .then((response) => response.json())
-      .then((result) => console.log(result))
+      .then((result) => {
+        console.log(result)
+        if (result?.success) {
+          toast.success("koin jo'natildi")
+        } else {
+          toast.error("hatolik bor")
+        }
+      })
       .catch((error) => console.error(error));
   };
 
@@ -126,7 +136,7 @@ function Navbar({ tokens, setTokens, profilMe, setProfilMe }) {
                   {profilMe
                     ? isNaN(profilMe?.score)
                       ? "0"
-                      : profilMe?.score * 10
+                      : profilMe?.score
                     : "0"}
                 </span>
                 <p className="coin_svg">
