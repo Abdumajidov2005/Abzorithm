@@ -37,6 +37,29 @@ function Navbar({ tokens, setTokens, profilMe, setProfilMe }) {
     };
   }, []);
 
+  const getCodialCoins = () => {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", `Bearer ${getToken()}`);
+
+    const raw = JSON.stringify({
+      description: "test",
+      date: "2025-12-17",
+    });
+
+    const requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch(`${baseUrl}/send-points/`, requestOptions)
+      .then((response) => response.json())
+      .then((result) => console.log(result))
+      .catch((error) => console.error(error));
+  };
+
   return (
     <>
       <div className="navbar">
@@ -85,7 +108,18 @@ function Navbar({ tokens, setTokens, profilMe, setProfilMe }) {
                 SignIn
               </Button>
             )}
-
+            {tokens ? (
+              <button
+                onClick={() => {
+                  getCodialCoins();
+                }}
+                className="codial_point"
+              >
+                Send codial
+              </button>
+            ) : (
+              ""
+            )}
             {tokens ? (
               <div className="coins">
                 <span className="coins-count">

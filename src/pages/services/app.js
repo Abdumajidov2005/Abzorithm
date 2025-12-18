@@ -132,25 +132,4 @@ export const getLeaderBoard = () => {
     });
 };
 
-export const getCodialCoins = () => {
-  const myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
-  myHeaders.append("Authorization", `Bearer ${getToken()}`);
 
-  const raw = JSON.stringify({
-    description: "test",
-    date: "2025-12-17",
-  });
-
-  const requestOptions = {
-    method: "POST",
-    headers: myHeaders,
-    body: raw,
-    redirect: "follow",
-  };
-
-  return fetch(`${baseUrl}/send-points/`, requestOptions)
-    .then((response) => response.json())
-    .then((result) => console.log(result))
-    .catch((error) => console.error(error));
-};
