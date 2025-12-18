@@ -15,7 +15,7 @@ function ProfilMe({ profil, setProfil, setProfilMe }) {
 
   const [bio, setBio] = useState("");
   const [avatarPreview, setAvatarPreview] = useState("");
-  const [country, setCountry] = useState("");
+  const [course, setCourse] = useState("");
 
   const fileInput = useRef();
 
@@ -24,7 +24,7 @@ function ProfilMe({ profil, setProfil, setProfilMe }) {
     getProfilMe()?.then((data) => {
       setProfil(data);
       setBio(data?.bio || "");
-      setCountry(data?.country || "");
+      setCourse(data?.course || "");
       setAvatarPreview(data?.avatar || "/imgs/icons.png");
     });
   }, [setProfil]);
@@ -35,7 +35,7 @@ function ProfilMe({ profil, setProfil, setProfilMe }) {
     getToken() ? myHeaders.append("Authorization", `Bearer ${getToken()}`) : "";
     const formdata = new FormData();
     formdata.append("bio", bio);
-    formdata.append("country", country);
+    formdata.append("course", course);
     if (fileInput.current?.files[0]) {
       formdata.append("avatar", fileInput.current.files[0]);
     }
@@ -99,7 +99,7 @@ function ProfilMe({ profil, setProfil, setProfilMe }) {
 
           <div className="users-infos">
             <h2>{profil?.username}</h2>
-            <p>{profil?.country}</p>
+            <p>{profil?.course}</p>
           </div>
         </div>
       </div>
@@ -146,7 +146,7 @@ function ProfilMe({ profil, setProfil, setProfilMe }) {
                 <span>Score:</span> <span>{profil?.score}</span>
               </p>
               <p>
-                <span>Yo'nalishi:</span> <span>{country}</span>
+                <span>Yo'nalishi:</span> <span>{course}</span>
               </p>
             </div>
 
@@ -181,9 +181,9 @@ function ProfilMe({ profil, setProfil, setProfilMe }) {
                 <span>Yo'nalishi:</span>
                 <span>
                   <input
-                    value={country}
+                    value={course}
                     onChange={(e) => {
-                      setCountry(e.target.value);
+                      setCourse(e.target.value);
                     }}
                     type="text"
                   />

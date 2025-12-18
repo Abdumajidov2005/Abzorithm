@@ -10,7 +10,7 @@ function CreateAccaunt() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   // const [bio, setBio] = useState("");
-  const [country, setCountry] = useState("");
+  const [course, setCourse] = useState("");
   const [project1_id, setProject1_id] = useState("");
 
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ function CreateAccaunt() {
       email: email,
       password: password,
       // bio: bio,
-      course: country,
+      course: course,
       project1_id: project1_id,
     });
 
@@ -112,7 +112,7 @@ function CreateAccaunt() {
               <label htmlFor="">Yo'nalish</label>
               <input
                 onChange={(e) => {
-                  setCountry(e.target.value);
+                  setCourse(e.target.value);
                 }}
                 type="text"
                 placeholder="Yo'nalish"
