@@ -74,7 +74,7 @@ function LeaderBoard({ ratingUser, setRatingUser }) {
                           : item?.bio}
                       </p>
                     </li>
-                    <li>{item?.score * 10}</li>
+                    <li>{item?.score}</li>
                     <li>
                       <p>{item?.score}</p>
                     </li>

@@ -1,0 +1,29 @@
+.error_page .container {
+  padding: 10px 0px;
+}
+
+.error_page_picture {
+  width: 100%;
+  border-radius: 50px;
+  overflow: hidden;
+  position: relative;
+}
+
+.error_page_picture img {
+  width: 100%;
+}
+
+.error_btn {
+  position: absolute;
+  bottom: 20px;
+  left: 520px;
+  z-index: 99;
+  cursor: pointer;
+  padding: 14px 20px;
+  background-color: white;
+  border: none;
+  border-radius: 100px;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
