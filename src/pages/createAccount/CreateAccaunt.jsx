@@ -5,13 +5,24 @@ import { toast } from "react-toastify";
 import Button from "@mui/material/Button";
 import { Link, useNavigate } from "react-router-dom";
 
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+
 function CreateAccaunt() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   // const [bio, setBio] = useState("");
-  const [course, setCourse] = useState("");
+  // const [course, setCourse] = useState("");
   const [project1_id, setProject1_id] = useState("");
+
+  const [course, setCourse] = useState("");
+
+  const handleChange = (event) => {
+    setCourse(event.target.value);
+  };
 
   const navigate = useNavigate();
 
@@ -109,14 +120,24 @@ function CreateAccaunt() {
             </div>
 
             <div className="settings">
-              <label htmlFor="">Yo'nalish</label>
-              <input
-                onChange={(e) => {
-                  setCourse(e.target.value);
-                }}
-                type="text"
-                placeholder="Yo'nalish"
-              />
+               <label htmlFor="">Yo'nalishi</label>
+              <FormControl className="forma" >
+                {/* <InputLabel id="demo-select-small-label">Yo'nalish</InputLabel> */}
+                <Select
+                  labelId="demo-select-small-label"
+                  id="demo-select-small"
+                  value={course}
+                  label="Yo'nalish"
+                  onChange={handleChange}
+                >
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  <MenuItem value={"Frontend"}>Frontend</MenuItem>
+                  <MenuItem value={"Backend"}>Backend</MenuItem>
+                  <MenuItem value={"Dart"}>Dart</MenuItem>
+                </Select>
+              </FormControl>
             </div>
             <div className="accaunt-btns">
               <Button
